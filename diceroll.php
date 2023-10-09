@@ -1,36 +1,51 @@
 <?php
 
+$numberOfRolls = 0;
+$numberOfRolls = $_POST('numberOfRolls');
+
+$dieResult = 0;
+$dieResult = $_POST('dieResult');
 $diceTypes = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20'];
+$dieType = $_POST("dieType");
+$diceRolled = [];
 
 //Function for rolling dice
-function rollDice($diceType) {
+function rollDie($dieType) {
 
-    $diceResult = 0;
-
-    switch($diceType){
+    switch($dieType){
         case 'd4':
-            $diceResult = rand(1,4);
+            $dieResult = rand(1,4);
             break;
         case 'd6':
-            $diceResult = rand(1,6);
+            $dieResult = rand(1,6);
             break;
         case 'd8':
-            $diceResult = rand(1,8);
+            $dieResult = rand(1,8);
             break;
         case 'd10':
-            $diceResult = rand(1,10);
+            $dieResult = rand(1,10);
             break;
         case 'd12':
-            $diceResult = rand(1,12);
+            $dieResult = rand(1,12);
             break;
         case 'd20':
-            $diceResult = rand(1,20);
+            $dieResult = rand(1,20);
             break;
     }
 
-    return $diceResult;
+    return $dieResult;
 
 }
+
+function rollDice($numberOfRolls, $dieType){
+
+    for($i = 1 ; $i <= $numberOfRolls; $i++){
+
+        array_push($diceRolled, rollDie($dieType));
+
+    }
+}
+
 
 
 
@@ -45,12 +60,12 @@ function rollDice($diceType) {
         <div>
                 <form name="form" action="" method="POST">
 
-                ROLL (1-9999) : <input type="number" name="roll" size="4">
+                ROLL (1-9999) : <input type="number" name="numberOfRolls" size="4">
 
 
                 DICE OPTIONS:
 
-                <select name="dice">
+                <select name="dieType">
 
                     <option value="4">d4</option>
 
@@ -64,10 +79,31 @@ function rollDice($diceType) {
 
                 </select>
 
-                <input type="submit" name = "submit" value="roll">
+                <input type="submit" name = "submit" value="numberOfRolls">
 
                 </form>
 
+
+                <?php 
+
+                if (isset($_POST['submit'])) {
+
+                    if ($numberOfRolls != 0) {
+
+                        echo "Many dice to roll : ". $numberOfRolls ."<br>";
+
+                        echo "Type of Die : " . $dieType ."<br><br>";
+
+                        $number = 1;
+
+                        foreach($diceRolled as $value){
+                            echo "output of the dice thrown at ". $number++ ." is " . $value . "<br>";
+                            echo "<br><br>";
+                        }
+                    } else {
+                        echo '<b class="error"> roll the dice at least 1 <b>';
+                    }
+                }?>
         </div>
     </body>
 </html>
