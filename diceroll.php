@@ -1,12 +1,17 @@
 <?php
 
-$numberOfRolls = 0;
-$numberOfRolls = $_POST('numberOfRolls');
+$_POST['numberOfRolls'] = $_POST['numberOfRolls'] ?? 0;
+$numberOfRolls = $_POST['numberOfRolls'];
 
-$dieResult = 0;
-$dieResult = $_POST('dieResult');
+$_POST['dieResult'] = $_POST['dieResult'] ?? 0;
+$dieResult = $_POST['dieResult'];
+
+
 $diceTypes = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20'];
-$dieType = $_POST("dieType");
+
+$_POST["dieType"] = $_POST["dieType"] ?? 'd4';
+$dieType = $_POST["dieType"];
+
 $diceRolled = [];
 
 //Function for rolling dice
@@ -39,11 +44,17 @@ function rollDie($dieType) {
 
 function rollDice($numberOfRolls, $dieType){
 
+    $diceRolls = [];
+
     for($i = 1 ; $i <= $numberOfRolls; $i++){
 
-        array_push($diceRolled, rollDie($dieType));
+        $dieResult = rollDie($dieType);
+
+        array_push($diceRolls, $dieResult);
 
     }
+
+    return $diceRolls;
 }
 
 
@@ -67,19 +78,21 @@ function rollDice($numberOfRolls, $dieType){
 
                 <select name="dieType">
 
-                    <option value="4">d4</option>
+                    <option value="d4">d4</option>
 
-                    <option value="6">d6</option>
+                    <option value="d6">d6</option>
 
-                    <option value="10">d10</option>
+                    <option value="d8">d8</option>
 
-                    <option value="12">d12</option>
+                    <option value="d10">d10</option>
 
-                    <option value="20">d20</option>
+                    <option value="d12">d12</option>
+
+                    <option value="d20">d20</option>
 
                 </select>
 
-                <input type="submit" name = "submit" value="numberOfRolls">
+                <input type="submit" name = "submit" value="Submit">
 
                 </form>
 
@@ -96,12 +109,14 @@ function rollDice($numberOfRolls, $dieType){
 
                         $number = 1;
 
+                        $diceRolled = rollDice($numberOfRolls, $dieType);
+
                         foreach($diceRolled as $value){
                             echo "output of the dice thrown at ". $number++ ." is " . $value . "<br>";
                             echo "<br><br>";
                         }
                     } else {
-                        echo '<b class="error"> roll the dice at least 1 <b>';
+                        echo '<b class="error"> Roll the dice at least 1 time. <b>';
                     }
                 }?>
         </div>
